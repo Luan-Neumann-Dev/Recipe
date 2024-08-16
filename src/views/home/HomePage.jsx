@@ -1,9 +1,29 @@
 import { Link } from "react-router-dom"
-import { BannerSlider, CategorySlider, Title, MealSlider} from "../../components/common"
+import { BannerSlider, CategorySlider, Title, MealSlider, Loader} from "../../components/common"
 import { dishTypeData } from "../../data"
 import { pattern_one } from "../../utils/images"
 
+import {useDispatch, useSelector} from 'react-redux'
+import { useEffect } from "react"
+import { fetchRecipes } from "../../redux/utils/recipeUtils"
+import { selectAllRecipes, getRecipesStatus, getRecipesError } from "../../redux/store/recipeSlice"
+import { STATUS } from "../../utils/status"
+import { RecipeList } from "../../components/recipe"
+
 const HomePage = () => {
+
+  const dispatch = useDispatch()
+  const recipes = useSelector(selectAllRecipes)
+
+  const recipesStatus = useSelector(getRecipesStatus)
+  const recipesError = useSelector(getRecipesError)
+
+  useEffect(() => {
+    dispatch(fetchRecipes())
+  }, [dispatch])
+
+  console.log(recipes)
+
   return (
     <main className="home-page custom-min-h pt-[4px]">
       <BannerSlider />
@@ -21,6 +41,16 @@ const HomePage = () => {
         <div className="container">
           <Title subTitle="Some Recipes" mainTitle="Chicken Recipes" />
           {/* recipes list */}
+
+          {
+            STATUS.LOADING === recipesStatus ? (
+              <Loader/>
+            ) : STATUS.FAILED === recipesStatus ? (
+              <div>{recipesError}</div>
+            ) : (
+              <RecipeList recipes={recipes} recipesLength={12} />
+            )
+          }
         </div>
       </section>
 
