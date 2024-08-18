@@ -6,7 +6,7 @@ import { pattern_one } from "../../utils/images"
 import {useDispatch, useSelector} from 'react-redux'
 import { useEffect } from "react"
 import { fetchRecipes } from "../../redux/utils/recipeUtils"
-import { selectAllRecipes, getRecipesStatus, getRecipesError } from "../../redux/store/recipeSlice"
+import { selectAllRecipes, getRecipesStatus, getRecipesError } from "../../redux/store/recipesSlice"
 import { STATUS } from "../../utils/status"
 import { RecipeList } from "../../components/recipe"
 
